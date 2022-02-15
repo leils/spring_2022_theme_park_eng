@@ -7,8 +7,11 @@
 Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
 const int maxDistance  = 400;
 
+bool bunnyIsUp = true;
+
 ServoEasing Servo1; //pin 5 on ESP32
 int startPos = 15; //startPos is the default for this servo
+int retreatPos = 160;
 int servoSpeed = 150;
 int buttonPin = 36;
 
@@ -38,18 +41,12 @@ void setup() {
 void loop(){
   if (sensor.isRangeComplete()) {
     int result = sensor.readRangeResult();
-    if (result < maxDistance) {
-      Serial.println(result);
-      if(result < 200) {
-        runServoBounce();
-      }
+    if (result < 300) {
+      bunnyIsUp = false;
+    } else {
+      bunnyIsUp = true;
     }
   }
-  // int buttonPressed = digitalRead(buttonPin);
-  //
-  // if (buttonPressed) {
-  //   runServoBounce();
-  // }
   delay(5);
 }
 
