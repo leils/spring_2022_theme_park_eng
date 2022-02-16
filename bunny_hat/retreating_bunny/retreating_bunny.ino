@@ -5,16 +5,19 @@
 
 // make an instance of the sensor library:
 Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
-const int maxDistance  = 400;
+const int maxDistance  = 300;
 
 bool bunnyUp = true;
 bool lastBunnyUp = bunnyUp;
+bool bunnyTwitch = false;
 
 ServoEasing Servo1; //pin 5 on ESP32
-int upPos = 15; //startPos is the default for this servo
-int downPos = 130;
-int servoSpeed = 150;
-int buttonPin = 36;
+const int upPos = 15; //startPos is the default for this servo
+const int downPos = 130;
+const int servoSpeed = 150;
+const int buttonPin = 36;
+
+float chanceToTwitch = .05;
 
 void setup() {
   Serial.begin(115200);
@@ -41,24 +44,39 @@ void setup() {
 
 
 void loop(){
+  //handle twitch
+
   if (sensor.isRangeComplete()) {
     int result = sensor.readRangeResult();
-    if (result < 300) {
+    if (result < maxDistance) {
       bunnyUp = false;
     } else {
       bunnyUp = true;
+      if (bunnyTwitch) {
+        handleTwitch();
+      }
     }
   }
 
   //Only run servo changes if we're changing direction
   if (bunnyUp != lastBunnyUp) {
-    Serial.println("State change detected.");
+    // Serial.println("State change detected.");
     (bunnyUp) ? handleBunnyUp() : handleBunnyDown();
   }
 
   lastBunnyUp = bunnyUp;
 
-  delay(5);
+  delay(10);
+}
+
+void handleTwitch() {
+  float diceRoll = random(0, 99)/100.00;
+  int twitchPosition = random(upPos, upPos+20);
+
+  if (diceRoll < chanceToTwitch) {
+    Servo1.easeTo(twitchPosition);
+    delay(15);
+  }
 }
 
 void handleBunnyDown() {
