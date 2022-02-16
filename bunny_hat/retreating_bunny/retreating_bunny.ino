@@ -6,6 +6,7 @@
 // make an instance of the sensor library:
 Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
 const int maxDistance  = 300;
+int lastDistance = 40000;
 
 bool bunnyUp = true;
 bool lastBunnyUp = bunnyUp;
@@ -15,7 +16,9 @@ ServoEasing Servo1; //pin 5 on ESP32
 const int upPos = 15; //startPos is the default for this servo
 const int downPos = 130;
 const int servoSpeed = 150;
+
 const int buttonPin = 36;
+int lastButtonPress = false;
 
 float chanceToTwitch = .05;
 
@@ -44,38 +47,49 @@ void setup() {
 
 
 void loop(){
-  //handle twitch
+  //handle twitch on/off
+  int buttonPressed = digitalRead(buttonPin);
+  if (buttonPressed && (buttonPressed != lastButtonPress)) {
+    bunnyTwitch = !bunnyTwitch;
+  }
+  lastButtonPress = buttonPressed;
 
   if (sensor.isRangeComplete()) {
     int result = sensor.readRangeResult();
-    if (result < maxDistance) {
-      bunnyUp = false;
-    } else {
-      bunnyUp = true;
-      if (bunnyTwitch) {
-        handleTwitch();
+    // Serial.println(result);
+    int distDiff = abs(lastDistance - result); //debounce differences that are too large
+    if (distDiff < maxDistance) {
+      if (result < maxDistance) {
+        bunnyUp = false;
+      } else {
+        bunnyUp = true;
+        if (bunnyTwitch) {
+          handleTwitch();
+        }
       }
     }
+
+    //Only run servo changes if we're changing direction
+    if (bunnyUp != lastBunnyUp) {
+      // Serial.println("State change detected.");
+      (bunnyUp) ? handleBunnyUp() : handleBunnyDown();
+    }
+
+
+    lastBunnyUp = bunnyUp;
+    lastDistance = result;
+    delay(5);
   }
 
-  //Only run servo changes if we're changing direction
-  if (bunnyUp != lastBunnyUp) {
-    // Serial.println("State change detected.");
-    (bunnyUp) ? handleBunnyUp() : handleBunnyDown();
-  }
-
-  lastBunnyUp = bunnyUp;
-
-  delay(10);
 }
 
 void handleTwitch() {
   float diceRoll = random(0, 99)/100.00;
-  int twitchPosition = random(upPos, upPos+20);
+  int twitchPosition = random(upPos, upPos+40);
 
   if (diceRoll < chanceToTwitch) {
     Servo1.easeTo(twitchPosition);
-    delay(15);
+    delay(5);
   }
 }
 
