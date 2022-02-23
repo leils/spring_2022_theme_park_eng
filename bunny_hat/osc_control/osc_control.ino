@@ -1,23 +1,32 @@
-
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <OSCMessage.h>
-#include <ESP32Servo.h>
+#include "ServoEasing.hpp"
+#include "pinDefs.h"
+#include "Adafruit_VL53L0X.h"
 
 // test network
 char ssid[] = "";          // your network SSID (name)
 char pass[] = "";                    // your network password
 
-// A UDP instance to let us send and receive packets over UDP
 WiFiUDP Udp;
 const unsigned int localPort = 8888;        // local port to listen for UDP packets (here's where we send the packets)
-
 OSCErrorCode error;
 
-Servo myservo;
+ServoEasing Servo1; //pin 5 on ESP32
+const int upPos = 15; //startPos is the default for this servo
+const int downPos = 130;
+const int servoSpeed = 150;
+
+const int buttonPin = 36;
+int lastButtonPress = false;
+
+bool bunnyTwitch = false;
+float chanceToTwitch = .05;
 
 void setup() {
   Serial.begin(115200);
+  if (!Serial) delay(3000);
 
   // Connect to WiFi network
   Serial.println();
@@ -42,10 +51,25 @@ void setup() {
 
   Serial.println(localPort);
 
-  myservo.attach(18, 1000, 2000); // attaches the servo on pin 18 to the servo object
+
+  // Set up servo
+  if (Servo1.attach(SERVO1_PIN, upPos) == INVALID_SERVO) {
+      Serial.println("Error attaching servo");
+    }
+  delay(1000);// wait a sec for the servo to move to the start
+  Servo1.setSpeed(servoSpeed); // set the speed of the servo in degrees per second
+  Servo1.setEasingType(EASE_CUBIC_OUT);
+
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(buttonPin, INPUT);
 }
 
+void twitch(OSCMessage &msg) {
+  int tog = msg.getInt(0);
+  bunnyTwitch = (tog) ? true : false;
+  Serial.print("/twitch: ");
+  Serial.println(bunnyTwitch);
+}
 
 void led(OSCMessage &msg) {
   int tog = msg.getInt(0);
@@ -56,13 +80,25 @@ void led(OSCMessage &msg) {
 
 void serv(OSCMessage &msg) {
   int pos = msg.getInt(0);
-  myservo.write(pos);
+  Servo1.easeTo(pos);
+  // myservo.write(pos);
   Serial.print("/servo: ");
   Serial.println(pos);
   delay(15);
 }
 
-void loop() {
+// void handleTwitch() {
+//   float diceRoll = random(0, 99)/100.00;
+//   int twitchPosition = random(upPos, upPos+40);
+//
+//   if (diceRoll < chanceToTwitch) {
+//     Servo1.easeTo(twitchPosition);
+//     delay(5);
+//   }
+// }
+
+
+void loop(){
   OSCMessage msg;
   int size = Udp.parsePacket();
 
@@ -73,10 +109,16 @@ void loop() {
     if (!msg.hasError()) {
       msg.dispatch("/servo", serv);
       msg.dispatch("/led", led);
+      msg.dispatch("/twitch", twitch);
     } else {
       error = msg.getError();
       Serial.print("error: ");
       Serial.println(error);
     }
   }
+  //
+  // //this doesn't seem to be working
+  // if(bunnyTwitch) {
+  //   handleTwitch();
+  // }
 }
