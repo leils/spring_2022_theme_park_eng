@@ -3,6 +3,8 @@
 #include <WiFiUdp.h>
 #include <OSCMessage.h>
 
+#define buttonPin 34
+int lastButtonRead = 0;
 // test network
 char ssid[] = "";          // your network SSID (name)
 char pass[] = "";                    // your network password
@@ -15,7 +17,7 @@ const unsigned int outPort = 8080;
 
 // A UDP instance to let us send and receive packets over UDP
 WiFiUDP Udp;
-const unsigned int localPort = 8888;        // local port to listen for UDP packets (here's where we send the packets)
+const unsigned int inPort = 8000;        // local port to listen for UDP packets (here's where we send the packets)
 
 OSCErrorCode error;
 
@@ -40,23 +42,53 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   Serial.println("Starting UDP");
-  Udp.begin(localPort);
+  Udp.begin(inPort);
   Serial.print("Local port: ");
 
-  Serial.println(localPort);
+  Serial.println(inPort);
 
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(buttonPin, INPUT);
+}
+
+void unrealTriggerPressed(OSCMessage &msg) {
+  Serial.println("Got a trigger press!");
 }
 
 void loop() {
-  //the message wants an OSC address as first argument
-   OSCMessage msg("/arduino");
-   // msg.add((int32_t)analogRead(0));
-   msg.add("ping!");
+  //Send out button presses
+  int buttonRead = digitalRead(buttonPin);
+  if ((buttonRead == 1) && (buttonRead != lastButtonRead)) {
+    Serial.println("Button pressed");
+    //the message wants an OSC address as first argument
+     OSCMessage outMsg("/buttonPress");
+     // msg.add((int32_t)analogRead(0));
+     outMsg.add(1);
 
-   Udp.beginPacket(outIp, outPort);
-     msg.send(Udp); // send the bytes to the SLIP stream
-   Udp.endPacket(); // mark the end of the OSC Packet
-   msg.empty(); // free space occupied by message
+     Udp.beginPacket(outIp, outPort);
+       outMsg.send(Udp); // send the bytes to the SLIP stream
+     Udp.endPacket(); // mark the end of the OSC Packet
+     outMsg.empty(); // free space occupied by message
+  }
+  lastButtonRead = buttonRead;
 
-   delay(20);}
+  //Take in OSC messages
+  OSCMessage inMsg;
+  int size = Udp.parsePacket();
+
+  if (size > 0) {
+    while (size--) {
+      inMsg.fill(Udp.read());
+    }
+    if (!inMsg.hasError()) {
+      inMsg.dispatch("/triggerPress", unrealTriggerPressed);
+    } else {
+      error = inMsg.getError();
+      Serial.print("Error: ");
+      Serial.println(error);
+    }
+
+  }
+
+   delay(20);
+ }
