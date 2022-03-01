@@ -1,3 +1,5 @@
+// Super basic lab with LED fading
+
 int ledPin = 13;    // onboard LED connected to pin 13
 void setup() {
   Serial.begin(9600);

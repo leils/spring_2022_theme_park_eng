@@ -1,3 +1,5 @@
+// Just connect with Max via OSC
+
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <OSCMessage.h>

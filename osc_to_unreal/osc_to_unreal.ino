@@ -1,3 +1,7 @@
+// Connects the Arduino to Unreal via OSC.
+// Sends "buttonPress" messages when a button is pressed
+// Receives "triggerPress" messages from Unreal 
+// Set up for my desktop computer & home network.
 
 #include <WiFi.h>
 #include <WiFiUdp.h>
