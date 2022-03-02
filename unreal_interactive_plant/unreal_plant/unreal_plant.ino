@@ -8,6 +8,7 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <OSCMessage.h>
+#include <ESP32Servo.h>
 
 // photo setup ------------------------------------------------/
 #define photoPin 34
@@ -18,10 +19,8 @@ int lastPhotoRead = 0;
 char ssid[] = "";          // your network SSID (name)
 char pass[] = "";                    // your network password
 
-// //the Arduino's IP
-// IPAddress ip(128, 32, 122, 252);
-//destination IP
-IPAddress outIp(192, 168, 1, 11);
+// IPAddress outIp(192, 168, 1, 4); //laptop IP
+IPAddress outIp(192, 168, 1, 11); //desktop IP
 const unsigned int outPort = 8080;
 
 // A UDP instance to let us send and receive packets over UDP
@@ -29,6 +28,11 @@ WiFiUDP Udp;
 const unsigned int inPort = 8000;        // local port to listen for UDP packets (here's where we send the packets)
 
 OSCErrorCode error;
+
+// Servo setup ------------------------------------------------/
+Servo myservo;
+const int left = 60;
+const int right = 120;
 
 void setup() {
   Serial.begin(115200);
@@ -58,11 +62,22 @@ void setup() {
 
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(photoPin, INPUT);
+
+  myservo.attach(18, 1000, 2000); // attaches the servo on pin 18 to the servo object
 }
 
 //TODO: run the motor
 void unrealTriggerPressed(OSCMessage &msg) {
   Serial.println("Got a trigger press!");
+
+  int i = 0;
+  while(i < 5) {
+    myservo.write(left);
+    delay(50);
+    myservo.write(right);
+    delay(50);
+    i++;
+  }
 }
 
 // Status should be 0(turned off) or 1(turned on)
@@ -81,7 +96,7 @@ void sendLight(int status) {
 void loop() {
   //*-----------------------------------------------------------*//
   //Send out photoResistor readings
-  int photoRead = analogRead(buttonPin);
+  int photoRead = analogRead(photoPin);
 
   if ((photoRead >= photoThreshold) && (lastPhotoRead < photoThreshold)) {
     sendLight(1);
@@ -102,7 +117,7 @@ void loop() {
     }
     if (!inMsg.hasError()) {
       //TODO turn this into something for the watering
-      inMsg.dispatch("/triggerPress", unrealTriggerPressed);
+      inMsg.dispatch("/water", unrealTriggerPressed);
     } else {
       error = inMsg.getError();
       Serial.print("Error: ");
