@@ -1,17 +1,55 @@
 #include "ServoEasing.hpp"
 #include "pinDefs.h"
-/*
-   Platform     Servo1      Servo2      Servo3
-   -------------------------------------------
-   ESP32        5           18          19
-*/
+#include "secrets.h"
+
+#include <WiFi.h>
+#include <WiFiUdp.h>
+#include <OSCMessage.h>
+#include "Adafruit_VL53L0X.h"
+
+char ssid[] = SECRET_SSID;
+char pass[] = SECRET_PASS;
+
+WiFiUDP Udp;
+const unsigned int localPort = 8888;        // local port to listen for UDP packets (here's where we send the packets)
+OSCErrorCode error;
+
+
+
 ServoEasing Servo1; // pin 5 ont he ESP32
 int startPos = 91;
 int servoSpeed = 200;
 void setup() {
 // put your setup code here, to run once:
   Serial.begin(115200);
+  if (!Serial) delay(3000);
+
+  // Connect to WiFi network
+  Serial.println();
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, pass);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  Serial.println("Starting UDP");
+  Udp.begin(localPort);
+  Serial.print("Local port: ");
+
+  Serial.println(localPort);
+
+  // Setup button, servo
   pinMode(BUTTON_PIN, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 
   if (Servo1.attach(SERVO1_PIN, startPos) == INVALID_SERVO) {
       Serial.println("Error attaching servo");
@@ -19,8 +57,23 @@ void setup() {
   delay(1000);// wait a sec for the servo to move to the start
 
   Servo1.setSpeed(servoSpeed); // set the speed of the servo in degrees per second
+  Servo1.setEasingType(EASE_LINEAR);
 }
+
+void ping(OSCMessage &msg) {
+  Serial.println("ping received");
+}
+
+void servo(OSCMessage &msg) {
+  int pos = msg.getInt(0);
+  Servo1.easeTo(pos);
+  Serial.print("/servo: ");
+  Serial.println(pos);
+  delay(15);
+}
+
 void loop() {
+  // Using Buttons
   int buttonPressed = digitalRead(BUTTON_PIN);
 
   if (buttonPressed) {
@@ -31,5 +84,20 @@ void loop() {
     Servo1.easeTo(10);
   }
 
-  delay(50);
+  OSCMessage msg;
+  int size = Udp.parsePacket();
+
+  if (size > 0) {
+    while (size--) {
+      msg.fill(Udp.read());
+    }
+    if (!msg.hasError()) {
+      msg.dispatch("/servo", servo);
+      msg.dispatch("/ping", ping);
+    } else {
+      error = msg.getError();
+      Serial.print("error: ");
+      Serial.println(error);
+    }
+  }
 }
