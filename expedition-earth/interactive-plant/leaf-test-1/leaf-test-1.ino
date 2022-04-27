@@ -14,7 +14,7 @@ WiFiUDP Udp;
 const unsigned int localPort = 8888;        // local port to listen for UDP packets (here's where we send the packets)
 OSCErrorCode error;
 
-
+bool useWifi = false;
 
 ServoEasing Servo1; // pin 5 ont he ESP32
 int startPos = 91;
@@ -31,25 +31,34 @@ void setup() {
   Serial.println(ssid);
   WiFi.begin(ssid, pass);
 
-  while (WiFi.status() != WL_CONNECTED) {
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  unsigned long stopWaiting = millis() + 5000;
+  while (WiFi.status() != WL_CONNECTED && (millis() > stopWaiting)) {
     delay(500);
     Serial.print(".");
   }
   Serial.println("");
 
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  if(WiFi.status() == WL_CONNECTED) {
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
 
-  Serial.println("Starting UDP");
-  Udp.begin(localPort);
-  Serial.print("Local port: ");
+    Serial.println("Starting UDP");
+    Udp.begin(localPort);
+    Serial.print("Local port: ");
 
-  Serial.println(localPort);
+    Serial.println(localPort);
+    digitalWrite(LED_BUILTIN, HIGH);
+
+    useWifi = true;
+  } else {
+    Serial.println("WiFi not connected, proceeding with button only");
+  }
 
   // Setup button, servo
   pinMode(BUTTON_PIN, INPUT);
-  pinMode(LED_BUILTIN, OUTPUT);
 
   if (Servo1.attach(SERVO1_PIN, startPos) == INVALID_SERVO) {
       Serial.println("Error attaching servo");
@@ -84,20 +93,22 @@ void loop() {
     Servo1.easeTo(10);
   }
 
-  OSCMessage msg;
-  int size = Udp.parsePacket();
+  if (useWifi) {
+    OSCMessage msg;
+    int size = Udp.parsePacket();
 
-  if (size > 0) {
-    while (size--) {
-      msg.fill(Udp.read());
-    }
-    if (!msg.hasError()) {
-      msg.dispatch("/servo", servo);
-      msg.dispatch("/ping", ping);
-    } else {
-      error = msg.getError();
-      Serial.print("error: ");
-      Serial.println(error);
+    if (size > 0) {
+      while (size--) {
+        msg.fill(Udp.read());
+      }
+      if (!msg.hasError()) {
+        msg.dispatch("/servo", servo);
+        msg.dispatch("/ping", ping);
+      } else {
+        error = msg.getError();
+        Serial.print("error: ");
+        Serial.println(error);
+      }
     }
   }
 }
