@@ -34,7 +34,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   unsigned long stopWaiting = millis() + 5000;
-  while (WiFi.status() != WL_CONNECTED && (millis() > stopWaiting)) {
+  while (WiFi.status() != WL_CONNECTED && (millis() < stopWaiting)) {
     delay(500);
     Serial.print(".");
   }
@@ -67,6 +67,7 @@ void setup() {
 
   Servo1.setSpeed(servoSpeed); // set the speed of the servo in degrees per second
   Servo1.setEasingType(EASE_LINEAR);
+  Servo1.easeTo(0);
 }
 
 void ping(OSCMessage &msg) {
