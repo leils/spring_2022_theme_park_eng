@@ -40,12 +40,13 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-104",
-					"maxclass" : "newobj",
+					"id" : "obj-129",
+					"linecount" : 3,
+					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 891.5, 559.0, 123.0, 22.0 ],
-					"text" : "print angle @popup 1"
+					"patching_rect" : [ 781.0, 559.0, 150.0, 48.0 ],
+					"text" : "Now we categorize based on -180 to 180 cause math is hard"
 				}
 
 			}
@@ -105,7 +106,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 819.0, 474.5, 50.0, 36.0 ],
-					"text" : "-2.569225"
+					"text" : "-2.857027"
 				}
 
 			}
@@ -116,7 +117,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 975.0, 441.0, 150.0, 103.0 ],
+					"patching_rect" : [ 1009.0, 441.0, 150.0, 103.0 ],
 					"text" : "equation to find angle of line from center to point, from x-axis\n\nangles are measured from the left side of the X-axis, clockwise."
 				}
 
@@ -164,7 +165,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1053.0, 348.0, 50.0, 22.0 ],
-					"text" : "4670."
+					"text" : "11878."
 				}
 
 			}
@@ -177,7 +178,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1053.0, 312.0, 50.0, 36.0 ],
-					"text" : "375.889282"
+					"text" : "289.729492"
 				}
 
 			}
@@ -190,7 +191,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1053.0, 276.0, 50.0, 36.0 ],
-					"text" : "550.905334"
+					"text" : "510.013214"
 				}
 
 			}
@@ -216,7 +217,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 565.0, 441.0, 50.0, 36.0 ],
 					"presentation_linecount" : 2,
-					"text" : "250.892322"
+					"text" : "177.136996"
 				}
 
 			}
@@ -352,12 +353,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-93",
-					"linecount" : 9,
+					"linecount" : 7,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1247.0, 28.0, 150.0, 131.0 ],
-					"text" : "TODO:\n- pull out each of these lists\n- view them as x/y/area\n- opt: filter by area\n- calculate direction and distance from center\n- trigger leaves based on distance and direction."
+					"patching_rect" : [ 1242.0, 34.5, 150.0, 103.0 ],
+					"text" : "TODO:\n- opt: filter by area\n- pack a list based on angles found in this round\n- trigger leaves based on distance and direction\n- HANDLE 000 CASE."
 				}
 
 			}
@@ -569,7 +570,7 @@
 			}
 , 			{
 				"box" : 				{
-					"cols" : 2,
+					"cols" : 3,
 					"colwidth" : 120,
 					"fontface" : 0,
 					"fontname" : "Arial",
@@ -1393,15 +1394,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-102", 0 ],
-					"order" : 1,
-					"source" : [ "obj-96", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-104", 0 ],
-					"order" : 0,
 					"source" : [ "obj-96", 0 ]
 				}
 
