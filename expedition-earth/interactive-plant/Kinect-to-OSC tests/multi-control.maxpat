@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 2,
-			"revision" : 1,
+			"revision" : 2,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -45,7 +45,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 25.0, 167.0, 150.0, 47.0 ],
+					"patching_rect" : [ 25.0, 167.0, 150.0, 48.0 ],
 					"text" : "if < 0, we don't see any centroids. Pass -1 directly to handler"
 				}
 
@@ -57,7 +57,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 63.0, 342.0, 151.0, 33.0 ],
+					"patching_rect" : [ 63.0, 342.0, 151.0, 34.0 ],
 					"text" : "util for seeing what should happen"
 				}
 
@@ -132,13 +132,13 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 2,
-							"revision" : 1,
+							"revision" : 2,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 518.0, 145.0, 916.0, 571.0 ],
+						"rect" : [ 970.0, 259.0, 916.0, 571.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -169,24 +169,12 @@
 						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
-									"id" : "obj-2",
-									"maxclass" : "newobj",
-									"numinlets" : 2,
-									"numoutlets" : 1,
-									"outlettype" : [ "int" ],
-									"patching_rect" : [ 346.25, 83.0, 29.5, 22.0 ],
-									"text" : "- 1"
-								}
-
-							}
-, 							{
-								"box" : 								{
 									"id" : "obj-93",
 									"linecount" : 3,
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 472.0, 139.0, 150.0, 47.0 ],
+									"patching_rect" : [ 472.0, 139.0, 150.0, 48.0 ],
 									"text" : "this works but index-by-1 (nth seems to be 1-index) \nneed to update to use 0 in"
 								}
 
@@ -221,8 +209,8 @@
 									"maxclass" : "newobj",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 413.5, 340.5, 68.0, 22.0 ],
-									"text" : "print funnel"
+									"patching_rect" : [ 413.5, 340.5, 78.0, 22.0 ],
+									"text" : "print funnelZl"
 								}
 
 							}
@@ -340,7 +328,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 39.0, 216.0, 101.0, 47.0 ],
+									"patching_rect" : [ 39.0, 216.0, 101.0, 48.0 ],
 									"text" : "as a programmer\ni am \noffended"
 								}
 
@@ -387,8 +375,8 @@
 									"maxclass" : "newobj",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 199.0, 395.5, 68.0, 22.0 ],
-									"text" : "print funnel"
+									"patching_rect" : [ 170.0, 400.5, 117.0, 22.0 ],
+									"text" : "print funnelOffended"
 								}
 
 							}
@@ -450,13 +438,6 @@
 							}
 , 							{
 								"patchline" : 								{
-									"destination" : [ "obj-83", 0 ],
-									"source" : [ "obj-2", 0 ]
-								}
-
-							}
-, 							{
-								"patchline" : 								{
 									"destination" : [ "obj-30", 0 ],
 									"source" : [ "obj-26", 0 ]
 								}
@@ -464,7 +445,16 @@
 							}
 , 							{
 								"patchline" : 								{
+									"destination" : [ "obj-10", 0 ],
+									"order" : 0,
+									"source" : [ "obj-30", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
 									"destination" : [ "obj-25", 0 ],
+									"order" : 1,
 									"source" : [ "obj-30", 0 ]
 								}
 
@@ -577,6 +567,15 @@
 , 							{
 								"patchline" : 								{
 									"destination" : [ "obj-90", 0 ],
+									"order" : 1,
+									"source" : [ "obj-88", 0 ]
+								}
+
+							}
+, 							{
+								"patchline" : 								{
+									"destination" : [ "obj-91", 0 ],
+									"order" : 0,
 									"source" : [ "obj-88", 0 ]
 								}
 
@@ -610,7 +609,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 83.0, 462.0, 151.0, 60.0 ],
+					"patching_rect" : [ 83.0, 462.0, 151.0, 62.0 ],
 					"text" : "Each of these buttons should became \"handlers\" (ie. handle turning 1 on and others off)"
 				}
 
@@ -644,7 +643,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 329.0, 216.0, 150.0, 33.0 ],
+					"patching_rect" : [ 329.0, 216.0, 150.0, 34.0 ],
 					"text" : "if >=0, convert to output 0-2"
 				}
 
