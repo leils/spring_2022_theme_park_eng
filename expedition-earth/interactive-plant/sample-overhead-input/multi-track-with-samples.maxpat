@@ -40,12 +40,107 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-104",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 891.5, 559.0, 123.0, 22.0 ],
+					"text" : "print angle @popup 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"format" : 6,
+					"id" : "obj-102",
+					"maxclass" : "flonum",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 696.0, 528.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-100",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 754.0, 528.0, 105.0, 20.0 ],
+					"text" : "angle in degrees"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-96",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 696.0, 489.0, 60.0, 22.0 ],
+					"text" : "* 57.2958"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-94",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 873.0, 481.5, 98.0, 20.0 ],
+					"text" : "angle in radians"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-91",
+					"linecount" : 2,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 819.0, 474.5, 50.0, 36.0 ],
+					"text" : "-2.569225"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-89",
+					"linecount" : 7,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 975.0, 441.0, 150.0, 103.0 ],
+					"text" : "equation to find angle of line from center to point, from x-axis\n\nangles are measured from the left side of the X-axis, clockwise."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-87",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 697.5, 441.0, 184.0, 22.0 ],
+					"text" : "expr atan2((240.0-$f2)\\,(340-$f1))"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-86",
 					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 835.0, 304.0, 90.0, 34.0 ],
+					"patching_rect" : [ 1121.0, 348.0, 90.0, 34.0 ],
 					"text" : "potentially cull areas too small"
 				}
 
@@ -68,8 +163,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 780.0, 308.0, 50.0, 22.0 ],
-					"text" : "4607."
+					"patching_rect" : [ 1053.0, 348.0, 50.0, 22.0 ],
+					"text" : "4670."
 				}
 
 			}
@@ -81,8 +176,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 715.0, 307.0, 50.0, 36.0 ],
-					"text" : "326.589752"
+					"patching_rect" : [ 1053.0, 312.0, 50.0, 36.0 ],
+					"text" : "375.889282"
 				}
 
 			}
@@ -94,8 +189,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 654.0, 306.0, 50.0, 36.0 ],
-					"text" : "438.784027"
+					"patching_rect" : [ 1053.0, 276.0, 50.0, 36.0 ],
+					"text" : "550.905334"
 				}
 
 			}
@@ -121,7 +216,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 565.0, 441.0, 50.0, 36.0 ],
 					"presentation_linecount" : 2,
-					"text" : "131.362358"
+					"text" : "250.892322"
 				}
 
 			}
@@ -130,13 +225,11 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 12.0,
 					"id" : "obj-65",
-					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 686.0, 525.0, 193.0, 34.0 ],
-					"presentation_linecount" : 2,
-					"text" : "distance between centroid and center point"
+					"patching_rect" : [ 617.0, 441.0, 85.0, 20.0 ],
+					"text" : "dist. to center"
 				}
 
 			}
@@ -145,13 +238,13 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 12.0,
 					"id" : "obj-39",
-					"linecount" : 4,
+					"linecount" : 3,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 921.0, 451.0, 193.0, 62.0 ],
-					"presentation_linecount" : 4,
-					"text" : "equation to find distance between 2 points on a cartesian plane\n\nsqrt((x2-x1)^2 + (y2-y1)^2)"
+					"patching_rect" : [ 869.0, 381.0, 193.0, 48.0 ],
+					"presentation_linecount" : 3,
+					"text" : "equation to find distance between 2 points on a cartesian plane\nsqrt((x2-x1)^2 + (y2-y1)^2)"
 				}
 
 			}
@@ -202,18 +295,6 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 37.0, 52.0, 71.0, 93.0 ],
 					"text" : "use higher number for slower polling"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-11",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 883.0, 369.0, 150.0, 34.0 ],
-					"text" : "for each val, determine dist and angle"
 				}
 
 			}
@@ -488,7 +569,7 @@
 			}
 , 			{
 				"box" : 				{
-					"cols" : 4,
+					"cols" : 2,
 					"colwidth" : 120,
 					"fontface" : 0,
 					"fontname" : "Arial",
@@ -1238,7 +1319,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-38", 1 ],
-					"order" : 0,
+					"order" : 2,
 					"source" : [ "obj-76", 1 ]
 				}
 
@@ -1246,7 +1327,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-38", 0 ],
-					"order" : 1,
+					"order" : 2,
 					"source" : [ "obj-76", 0 ]
 				}
 
@@ -1254,6 +1335,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-78", 1 ],
+					"midpoints" : [ 574.5, 294.0, 1038.0, 294.0, 1038.0, 228.0, 1155.0, 228.0, 1155.0, 288.0, 1104.0, 288.0, 1104.0, 273.0, 1093.5, 273.0 ],
 					"order" : 0,
 					"source" : [ "obj-76", 0 ]
 				}
@@ -1262,7 +1344,8 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-80", 1 ],
-					"order" : 1,
+					"midpoints" : [ 608.5, 366.0, 1050.0, 366.0, 1050.0, 372.0, 1113.0, 372.0, 1113.0, 306.0, 1093.5, 306.0 ],
+					"order" : 0,
 					"source" : [ "obj-76", 1 ]
 				}
 
@@ -1270,7 +1353,56 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-82", 1 ],
+					"midpoints" : [ 642.5, 366.0, 1050.0, 366.0, 1050.0, 372.0, 1104.0, 372.0, 1104.0, 342.0, 1093.5, 342.0 ],
 					"source" : [ "obj-76", 2 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-87", 1 ],
+					"order" : 1,
+					"source" : [ "obj-76", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-87", 0 ],
+					"order" : 1,
+					"source" : [ "obj-76", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-91", 1 ],
+					"order" : 0,
+					"source" : [ "obj-87", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-96", 0 ],
+					"order" : 1,
+					"source" : [ "obj-87", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-102", 0 ],
+					"order" : 1,
+					"source" : [ "obj-96", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-104", 0 ],
+					"order" : 0,
+					"source" : [ "obj-96", 0 ]
 				}
 
 			}
