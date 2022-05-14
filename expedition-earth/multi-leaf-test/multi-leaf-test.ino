@@ -145,9 +145,9 @@ void loop() {
         msg.fill(Udp.read());
       }
       if (!msg.hasError()) {
-        msg.dispatch("/servo1", servo1);
-        msg.dispatch("/servo2", servo1);
-        msg.dispatch("/servo3", servo1);
+        msg.dispatch("/servo0", servo1);
+        msg.dispatch("/servo1", servo2);
+        msg.dispatch("/servo2", servo3);
         msg.dispatch("/ping", ping);
       } else {
         error = msg.getError();
