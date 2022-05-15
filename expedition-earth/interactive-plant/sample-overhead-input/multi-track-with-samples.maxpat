@@ -40,6 +40,17 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 670.0, 647.0, 158.0, 22.0 ],
+					"text" : "udpsend 192.168.1.17 8888"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-211",
 					"maxclass" : "comment",
 					"numinlets" : 1,
@@ -582,6 +593,7 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-184",
@@ -1476,7 +1488,7 @@
 			}
 , 			{
 				"box" : 				{
-					"cols" : 2,
+					"cols" : 3,
 					"colwidth" : 120,
 					"fontface" : 0,
 					"fontname" : "Arial",
@@ -2080,7 +2092,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"order" : 0,
+					"source" : [ "obj-203", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-158", 0 ],
+					"order" : 1,
 					"source" : [ "obj-203", 0 ]
 				}
 
