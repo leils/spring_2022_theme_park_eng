@@ -28,7 +28,7 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define USMIN  600 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
 #define USMAX  2400 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
 #define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
-#define SERVO_SPEED 6 // Speed that the servo moves
+#define SERVO_SPEED 10 // Speed that the servo moves
 
 // our servo # counter
 uint8_t servonum = 0;
@@ -122,10 +122,10 @@ void loop() {
       if (!msg.hasError()) {
         msg.dispatch("/servo0", servo0);
         // TODO
-        // msg.dispatch("/servo1", servo1);
-        // msg.dispatch("/servo2", servo2);
-        // msg.dispatch("/servo3", servo3);
-        // msg.dispatch("/servo4", servo4);
+        msg.dispatch("/servo1", servo1);
+        msg.dispatch("/servo2", servo2);
+        msg.dispatch("/servo3", servo3);
+        msg.dispatch("/servo4", servo4);
         msg.dispatch("/ping", ping);
       } else {
         error = msg.getError();
@@ -142,38 +142,39 @@ void ping(OSCMessage &msg) {
   Serial.println("Ping!");
 }
 
+void handleServoGoal(int desiredState, int index) {
+  if (desiredState == 1) {
+    servoGoal[index] = SERVOMAX;
+  } else {
+    servoGoal[index] = SERVOMIN;
+  }
+  Serial.print("Goal updating: ");
+  Serial.print(index);
+  Serial.print(" to ");
+  Serial.println(desiredState);
+}
+
 void servo0(OSCMessage &msg) {
   int pos = msg.getInt(0);
-  servoGoal[0] = pos;
-  // pwm.setPWM(0, 0, pos);
-  Serial.print("/servo1 goal: ");
-  Serial.println(pos);
+  handleServoGoal(pos, 0);
 }
 
 void servo1(OSCMessage &msg) {
   int pos = msg.getInt(0);
-  servoGoal[1] = pos;
-  Serial.print("/servo1 goal: ");
-  Serial.println(pos);
+  handleServoGoal(pos, 1);
 }
 
 void servo2(OSCMessage &msg) {
   int pos = msg.getInt(0);
-  servoGoal[2] = pos;
-  Serial.print("/servo1 goal: ");
-  Serial.println(pos);
+  handleServoGoal(pos, 2);
 }
 
 void servo3(OSCMessage &msg) {
   int pos = msg.getInt(0);
-  servoGoal[3] = pos;
-  Serial.print("/servo1 goal: ");
-  Serial.println(pos);
+  handleServoGoal(pos, 3);
 }
 
 void servo4(OSCMessage &msg) {
   int pos = msg.getInt(0);
-  servoGoal[4] = pos;
-  Serial.print("/servo1 goal: ");
-  Serial.println(pos);
+  handleServoGoal(pos, 4);
 }
